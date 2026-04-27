@@ -1,0 +1,101 @@
+{
+  "model_id": "Qwen/Qwen2.5-3B",
+  "prompt": "Reaching ATH (",
+  "device": "mps",
+  "config": {
+    "num_hidden_layers": 36,
+    "hidden_size": 2048,
+    "num_attention_heads": 16,
+    "num_key_value_heads": 2,
+    "head_dim": 128,
+    "intermediate_size": 11008,
+    "vocab_size": 151936,
+    "rope_theta": null
+  },
+  "input_tokens": [
+    {
+      "position": 0,
+      "id": 693,
+      "decoded": "Re"
+    },
+    {
+      "position": 1,
+      "id": 11829,
+      "decoded": "aching"
+    },
+    {
+      "position": 2,
+      "id": 87089,
+      "decoded": " ATH"
+    },
+    {
+      "position": 3,
+      "id": 320,
+      "decoded": " ("
+    }
+  ],
+  "generated_tokens": [
+    {
+      "step": 0,
+      "id": 2403,
+      "decoded": "All"
+    },
+    {
+      "step": 1,
+      "id": 4120,
+      "decoded": " Time"
+    },
+    {
+      "step": 2,
+      "id": 5124,
+      "decoded": " High"
+    },
+    {
+      "step": 3,
+      "id": 8,
+      "decoded": ")"
+    },
+    {
+      "step": 4,
+      "id": 304,
+      "decoded": " in"
+    },
+    {
+      "step": 5,
+      "id": 279,
+      "decoded": " the"
+    },
+    {
+      "step": 6,
+      "id": 5591,
+      "decoded": " stock"
+    },
+    {
+      "step": 7,
+      "id": 3081,
+      "decoded": " market"
+    },
+    {
+      "step": 8,
+      "id": 374,
+      "decoded": " is"
+    },
+    {
+      "step": 9,
+      "id": 264,
+      "decoded": " a"
+    }
+  ],
+  "first_all_layer": 36,
+  "files": {
+    "input_ids.npy": "input token IDs (shape: [seq])",
+    "embedding.npy": "embedding output for input prompt (shape: [seq, d_model])",
+    "hidden_states.npy": "residual stream after each layer (shape: [L+1, seq, d_model])",
+    "attention_weights.npy": "attention post-softmax weights (shape: [L, n_heads, seq, seq])",
+    "final_logits.npy": "logits at last position (shape: [vocab])",
+    "final_probs.npy": "softmax probs at last position (shape: [vocab])",
+    "relevant_embeddings.npz": "raw embedding rows for input + generated tokens",
+    "logit_lens.json": "top-K predictions per layer for last token (logit lens)",
+    "autoregression.json": "top-K predictions per generation step"
+  }
+}

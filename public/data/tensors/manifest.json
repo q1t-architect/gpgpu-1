@@ -1,0 +1,160 @@
+{
+  "assets": {
+    "input_ids": {
+      "file": "input_ids.bin",
+      "dtype": "int32",
+      "shape": [
+        4
+      ],
+      "bytes": 16
+    },
+    "embedding": {
+      "file": "embedding.bin",
+      "dtype": "float32",
+      "shape": [
+        4,
+        2048
+      ],
+      "bytes": 32768
+    },
+    "hidden_states": {
+      "file": "hidden_states.bin",
+      "dtype": "float32",
+      "shape": [
+        37,
+        4,
+        2048
+      ],
+      "bytes": 1212416
+    },
+    "attention_weights": {
+      "file": "attention_weights.bin",
+      "dtype": "float32",
+      "shape": [
+        36,
+        16,
+        4,
+        4
+      ],
+      "bytes": 36864
+    },
+    "final_logits": {
+      "file": "final_logits.bin",
+      "dtype": "float32",
+      "shape": [
+        151936
+      ],
+      "bytes": 607744
+    },
+    "final_probs": {
+      "file": "final_probs.bin",
+      "dtype": "float32",
+      "shape": [
+        151936
+      ],
+      "bytes": 607744
+    },
+    "metadata": {
+      "file": "metadata.json",
+      "dtype": "json",
+      "bytes": 2124
+    },
+    "logit_lens": {
+      "file": "logit_lens.json",
+      "dtype": "json",
+      "bytes": 43377
+    },
+    "autoregression": {
+      "file": "autoregression.json",
+      "dtype": "json",
+      "bytes": 47
+    }
+  },
+  "model_id": "Qwen/Qwen2.5-3B",
+  "prompt": "Reaching ATH (",
+  "config": {
+    "num_hidden_layers": 36,
+    "hidden_size": 2048,
+    "num_attention_heads": 16,
+    "num_key_value_heads": 2,
+    "head_dim": 128,
+    "intermediate_size": 11008,
+    "vocab_size": 151936,
+    "rope_theta": null
+  },
+  "input_tokens": [
+    {
+      "position": 0,
+      "id": 693,
+      "decoded": "Re"
+    },
+    {
+      "position": 1,
+      "id": 11829,
+      "decoded": "aching"
+    },
+    {
+      "position": 2,
+      "id": 87089,
+      "decoded": " ATH"
+    },
+    {
+      "position": 3,
+      "id": 320,
+      "decoded": " ("
+    }
+  ],
+  "generated_tokens": [
+    {
+      "step": 0,
+      "id": 2403,
+      "decoded": "All"
+    },
+    {
+      "step": 1,
+      "id": 4120,
+      "decoded": " Time"
+    },
+    {
+      "step": 2,
+      "id": 5124,
+      "decoded": " High"
+    },
+    {
+      "step": 3,
+      "id": 8,
+      "decoded": ")"
+    },
+    {
+      "step": 4,
+      "id": 304,
+      "decoded": " in"
+    },
+    {
+      "step": 5,
+      "id": 279,
+      "decoded": " the"
+    },
+    {
+      "step": 6,
+      "id": 5591,
+      "decoded": " stock"
+    },
+    {
+      "step": 7,
+      "id": 3081,
+      "decoded": " market"
+    },
+    {
+      "step": 8,
+      "id": 374,
+      "decoded": " is"
+    },
+    {
+      "step": 9,
+      "id": 264,
+      "decoded": " a"
+    }
+  ],
+  "total_bytes": 2543100
+}
