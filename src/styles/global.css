@@ -52,7 +52,15 @@ body {
 }
 
 .hero-canvas {
-  position: absolute !important;
+  position: fixed !important;
   inset: 0;
   display: block;
+  z-index: 1;
+}
+
+.scroll-spacer {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  pointer-events: none;
 }

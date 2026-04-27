@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { loadTensorBundle } from './tensors/loader';
 import type { TensorBundle } from './tensors/types';
 import { HeroCanvas } from './scene/HeroCanvas';
+import { Overlay } from './ui/Overlay';
+import { ScrollDriver } from './state/ScrollDriver';
+import './styles/overlay.css';
 
 export function App() {
   const [bundle, setBundle] = useState<TensorBundle | null>(null);
@@ -25,8 +28,12 @@ export function App() {
   if (!bundle) return <main className="hero hero--loading">…</main>;
 
   return (
-    <main className="hero">
+    <>
       <HeroCanvas bundle={bundle} />
-    </main>
+      <ScrollDriver bundle={bundle} />
+      <Overlay bundle={bundle} />
+      {/* This spacer creates real scroll height; the canvas is fixed. */}
+      <div className="scroll-spacer" style={{ height: '600vh' }} />
+    </>
   );
 }

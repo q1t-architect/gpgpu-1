@@ -7,13 +7,8 @@
  * label, brand-reveal stage) go through `useSyncExternalStore`.
  */
 
-export type NarrativePhase =
-  | 'confusion'
-  | 'recognition'
-  | 'acronym_lock'
-  | 'cross_lingual'
-  | 'english_search'
-  | 'crystallization';
+import type { NarrativePhase } from './types-runtime';
+export type { NarrativePhase };
 
 export interface FrameState {
   scrollProgress: number;  // 0..1
