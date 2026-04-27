@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { loadTensorBundle } from './tensors/loader';
 import type { TensorBundle } from './tensors/types';
+import { HeroCanvas } from './scene/HeroCanvas';
 
 export function App() {
   const [bundle, setBundle] = useState<TensorBundle | null>(null);
@@ -20,23 +21,12 @@ export function App() {
     };
   }, []);
 
+  if (error) return <main className="hero hero--error">{error}</main>;
+  if (!bundle) return <main className="hero hero--loading">…</main>;
+
   return (
     <main className="hero">
-      <h1>ATH</h1>
-      {error && <p style={{ color: 'tomato' }}>{error}</p>}
-      {!bundle && !error && <p>Loading tensors…</p>}
-      {bundle && (
-        <pre style={{ textAlign: 'left', fontSize: 12 }}>
-          {`prompt:        ${bundle.manifest.prompt}
-layers:        ${bundle.numLayers}
-hidden:        ${bundle.hiddenSize}
-seq:           ${bundle.seqLen}
-heads:         ${bundle.numHeads}
-embedding[0]:  ${bundle.embedding[0].toFixed(4)}
-hidden last:   ${bundle.hiddenStates[bundle.hiddenStates.length - 1].toFixed(4)}
-logit_lens L0: ${bundle.logitLens.layers[0].top_tokens[0].token} (p=${bundle.logitLens.layers[0].top_tokens[0].prob.toFixed(3)})`}
-        </pre>
-      )}
+      <HeroCanvas bundle={bundle} />
     </main>
   );
 }
