@@ -71,21 +71,36 @@ export interface InitialPositions {
 export function buildInitialPositions(
   bundle: TensorBundle,
   textureSize: number,
-  cloudSpread = 0.55,
+  cloudSpread = 1.05,
+  embeddingJitter = 0.45,
 ): InitialPositions {
   const { embedding, hiddenSize, seqLen } = bundle;
   const P = textureSize * textureSize;
   const data = new Float32Array(P * 4);
   const M = buildProjection(hiddenSize, 42);
 
-  // Project the hiddenSize-dim embedding of each token to a token-center in R^3.
+  // Token anchors: a hand-picked, asymmetric layout that fills a 16:9 frame
+  // without feeling like a row of dots. Order matches input_tokens:
+  //   t=0 "Re"  → far left
+  //   t=1 "aching" → lower-mid
+  //   t=2 " ATH" → upper-right (the headliner)
+  //   t=3 " ("   → far right, lower
+  const anchorBase: number[][] = [
+    [-2.55, 0.35, -0.35],
+    [-0.85, -0.95, 0.35],
+    [ 1.20, 0.95, -0.20],
+    [ 2.45, -0.55, 0.20],
+  ];
+
+  // Project embedding → small 3D jitter so each token's cluster has a unique
+  // *shape* derived from its real embedding (not just placement).
   const centers = new Float32Array(seqLen * 3);
   for (let t = 0; t < seqLen; t++) {
     const row = embedding.subarray(t * hiddenSize, (t + 1) * hiddenSize);
-    const [cx, cy, cz] = project(M, row);
-    centers[t * 3 + 0] = cx;
-    centers[t * 3 + 1] = cy;
-    centers[t * 3 + 2] = cz;
+    const [px, py, pz] = project(M, row);
+    centers[t * 3 + 0] = anchorBase[t][0] + px * embeddingJitter;
+    centers[t * 3 + 1] = anchorBase[t][1] + py * embeddingJitter;
+    centers[t * 3 + 2] = anchorBase[t][2] + pz * embeddingJitter;
   }
 
   // Per-token RNG so the cloud around each center is reproducible.
@@ -96,8 +111,8 @@ export function buildInitialPositions(
     const t = Math.floor((p / P) * seqLen);
     const rng = rngs[t];
     const ox = gauss(rng(), rng()) * cloudSpread;
-    const oy = gauss(rng(), rng()) * cloudSpread;
-    const oz = gauss(rng(), rng()) * cloudSpread * 0.7; // flatter cloud reads as a "card"
+    const oy = gauss(rng(), rng()) * cloudSpread * 0.85;
+    const oz = gauss(rng(), rng()) * cloudSpread * 0.55; // flatter cloud reads as a "card"
     const cx = centers[t * 3 + 0];
     const cy = centers[t * 3 + 1];
     const cz = centers[t * 3 + 2];

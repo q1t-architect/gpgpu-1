@@ -66,9 +66,11 @@ const fragment = /* glsl */ `
       texture2D(inputBuffer, uv - caOffset).b
     );
 
-    // Bayer dither per channel.
+    // Bayer dither per channel; mix back with non-dithered so the pattern
+    // textures the image instead of dominating it.
     float th = bayer4(fragPx);
     vec3 dith = vec3(dither1(ca.r, th), dither1(ca.g, th), dither1(ca.b, th));
+    dith = mix(ca, dith, 0.55);
 
     // Film grain.
     float n = hash12(fragPx + uTime * 60.0) - 0.5;
@@ -90,7 +92,7 @@ interface RisoOptions {
 }
 
 export class RisoEffect extends Effect {
-  constructor({ grain = 0.06, chromaPx = 0.4, vignette = 0.85 }: RisoOptions = {}) {
+  constructor({ grain = 0.04, chromaPx = 0.35, vignette = 0.7 }: RisoOptions = {}) {
     super('RisoEffect', fragment, {
       blendFunction: BlendFunction.NORMAL,
       attributes: EffectAttribute.CONVOLUTION,

@@ -74,7 +74,7 @@ export function Overlay({ bundle }: Props) {
 function BrandReveal({ stage }: { stage: number }) {
   // Stage 0: paper-on-paper, ghost. Stage 1: full ink contrast.
   const opacity = 0.08 + stage * 0.92;
-  const tracking = (1.6 - stage * 1.4).toFixed(2);
+  const tracking = (0.6 - stage * 0.55).toFixed(2);
   const weight = 200 + Math.round(stage * 600);
   const colorMix = `color-mix(in oklab, var(--paper) ${stage * 100}%, var(--ink))`;
   return (

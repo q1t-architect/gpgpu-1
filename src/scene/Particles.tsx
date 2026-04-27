@@ -25,8 +25,8 @@ interface Props {
 export function Particles({
   bundle,
   textureSize,
-  pixelSize = 1.6,
-  channelOffset = 0.6,
+  pixelSize = 2.0,
+  channelOffset = 1.4,
 }: Props) {
   const renderer = useThree((s) => s.gl);
   const size = useThree((s) => s.size);
