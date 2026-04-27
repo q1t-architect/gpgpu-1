@@ -19,5 +19,5 @@
     "noUncheckedSideEffectImports": true,
     "types": ["vite/client"]
   },
-  "include": ["src", "src/**/*.glsl"]
+  "include": ["src"]
 }
