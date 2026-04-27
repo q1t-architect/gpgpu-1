@@ -162,8 +162,47 @@ L             = 36                                       // layers (residual str
 
 ## Trade-offs и компромиссы
 
-To be filled progressively as compromises are made.
+- **Particle count**: started at 256×256 = 65 536 desktop / 128×128 = 16 384
+  mobile instead of the brief's 512×512. Reason: 256² already saturates the
+  riso aesthetic visually; 512² doubles fragment work for diminishing return
+  and is risky on mid-tier laptops trying to hold 60 fps with the post pass.
+  See `TODO`.
+- **Position-only FBO**: stored only position+sourceToken per particle and
+  recompute velocity from tensor uniforms each frame, instead of a separate
+  velocity FBO. Halves bandwidth and removes one ping-pong, at the cost of
+  losing per-particle inertia. Acceptable because the visual interest comes
+  from cluster reshape, not particle trails.
+- **Token anchors are hand-placed**, not the centroids of the *raw* embedding
+  projection. Reason: real Qwen embeddings of 4 nearby tokens project to
+  4 points within ~1 unit of the origin — the resulting clusters all overlap.
+  We keep the embedding projection as a *jitter* (real, just scaled small),
+  while the layout itself is curated so each token gets a recognisable region
+  of the frame.
+- **Hidden-magnitude binning**: only 128 bins out of 2048 hidden dims, picked
+  with constant stride (every 16th element). Cheaper texture, and visually we
+  cannot distinguish more anyway. Documented in `buildHiddenMagData`.
+- **No instanced points**: used `THREE.Points` with one vertex per particle
+  instead of an instanced quad. Squares are square enough at 1–2 px and
+  `gl_PointSize` is the cheapest path. Loses depth sorting but with additive
+  blending order doesn't matter.
+- **Fonts via CDN, not self-hosted**: Fontshare + Google Fonts CDN to keep
+  the bundle small. Trade: third-party DNS dependency. If reliability becomes
+  an issue, we can vendor the WOFF2 files into `public/fonts/`.
+- **Reduced motion = seed-pose snapshot, not converged L36 snapshot**: the
+  cleanest way to actually reach the L36 attention-pulled state without
+  animating would be a CPU pre-convergence step or a bunch of warmup frames;
+  shipped the simpler "freeze at seed pose with full brand reveal" because
+  it still reads as a designed composition (4 token clusters + brand text).
 
 ## TODO следующая сессия
 
-To be populated by `RUN_REPORT.md` at the end of this run.
+1. Promote desktop particle count to 512² behind a perf budget gate (drop
+   resolution if FPS < 50 measured over a 2 s window). Mobile stays 128².
+2. Ship a per-particle velocity FBO so that climax churn produces actual
+   trails instead of just colour modulation.
+3. Replace constant-stride hidden binning with a learnable / picked
+   subspace (e.g. PCA top-128 directions of the hidden-state matrix).
+4. Polish the `prefers-reduced-motion` snapshot to a warmed-up L36 state by
+   running ~120 sim steps once on mount.
+5. Add a tiny scroll-progress hairline at the bottom edge so the user knows
+   where they are in the 6× viewport scroll budget.
