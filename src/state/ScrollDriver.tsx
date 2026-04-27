@@ -66,8 +66,8 @@ export function ScrollDriver({ bundle, scrollVh = 6 }: Props) {
       const layerInt = Math.min(bundle.numLayers, Math.floor(layerFrac));
       const sample = phases[Math.min(layerInt, phases.length - 1)];
 
-      // brand reveal kicks in across the final ~20% of scroll.
-      const brand = Math.max(0, Math.min(1, (scroll - 0.8) / 0.2));
+      // brand reveal aligns with the L36 plateau (last 10% of scroll).
+      const brand = Math.max(0, Math.min(1, (scroll - 0.9) / 0.08));
 
       setSub({
         layerInt,

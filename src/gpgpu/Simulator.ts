@@ -127,7 +127,7 @@ export class Simulator {
     renderer.render(scene, this.camera);
     renderer.setRenderTarget(prev);
     initMat.dispose();
-    tmp.geometry === this.mesh.geometry || tmp.geometry.dispose();
+    if (tmp.geometry !== this.mesh.geometry) tmp.geometry.dispose();
   }
 
   /** Advance the simulation one tick; returns the texture holding the new state. */

@@ -42,13 +42,20 @@ export function derivePhases(bundle: TensorBundle): PhaseSample[] {
       lastTopId = topId;
     }
 
+    // L0 is the embedding-projected logits — it trivially returns the input
+    // token (prob~1.0). Treat it as confusion regardless of dominance.
     let phase: NarrativePhase;
-    if (layer === L && topProb > 0.7) phase = 'crystallization';
+    if (layer === 0) {
+      phase = 'confusion';
+    } else if (layer === L && topProb > 0.7) phase = 'crystallization';
     else if (isCJK) {
       phase = 'cross_lingual';
       sawCJK = true;
     } else if (sawCJK && isLatin) phase = 'english_search';
-    else if (topProb > 0.3) phase = 'acronym_lock';
+    // The "lock" beat only makes sense once the model has settled into a real
+    // prediction band — guard with layer >= L/3 so early high-prob noise on
+    // bracket-like tokens doesn't masquerade as the climax.
+    else if (topProb > 0.3 && layer >= Math.floor(L / 3)) phase = 'acronym_lock';
     else if (stableCount >= 2) phase = 'recognition';
     else phase = 'confusion';
 
