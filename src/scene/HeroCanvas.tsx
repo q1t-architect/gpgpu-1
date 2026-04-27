@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useEffect, useState } from 'react';
 import { Particles } from './Particles';
+import { PostFx } from '../post/PostFx';
 import type { TensorBundle } from '../tensors/types';
 import { frame } from '../state/store';
 
@@ -58,6 +59,7 @@ export function HeroCanvas({ bundle }: Props) {
     >
       <Suspense fallback={null}>
         <Particles bundle={bundle} textureSize={textureSize} />
+        {!isMobile && <PostFx />}
       </Suspense>
     </Canvas>
   );
