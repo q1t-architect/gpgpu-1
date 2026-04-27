@@ -164,7 +164,11 @@ export function Particles({
   const tmpMat4 = useMemo(() => new THREE.Matrix4(), []);
 
   useFrame((_, dtRaw) => {
-    if (frame.reducedMotion) return; // static frame; sim already initialized to seed pose
+    if (frame.reducedMotion) {
+      // Static frame: keep brand reveal uniform fresh, but never advance the sim.
+      renderUniforms.uPhaseHeat.value = 0;
+      return;
+    }
     const dt = Math.min(dtRaw, 0.05);
 
     const layerFrac = frame.layerFrac;

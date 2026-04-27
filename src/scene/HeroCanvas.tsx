@@ -1,9 +1,10 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { Particles } from './Particles';
 import { PostFx } from '../post/PostFx';
 import type { TensorBundle } from '../tensors/types';
 import { frame } from '../state/store';
+import { detectCapabilities } from './capabilities';
 
 interface Props {
   bundle: TensorBundle;
@@ -18,6 +19,7 @@ function detectMobile(): boolean {
 
 export function HeroCanvas({ bundle }: Props) {
   const [isMobile, setIsMobile] = useState(detectMobile());
+  const caps = useMemo(() => detectCapabilities(), []);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -40,6 +42,17 @@ export function HeroCanvas({ bundle }: Props) {
 
   const textureSize = isMobile ? 128 : 256;
   const dprMax = isMobile ? 1.25 : 1.75;
+
+  if (!caps.webgl2 || !caps.floatRenderable) {
+    return (
+      <div className="hero hero--unsupported" role="status">
+        <div>
+          <p>This piece needs WebGL2 with float-renderable buffers.</p>
+          <p>Try a recent Chrome, Safari 16+, or Firefox.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Canvas

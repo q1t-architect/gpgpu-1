@@ -24,6 +24,24 @@ export function ScrollDriver({ bundle, scrollVh = 6 }: Props) {
   const scrollMap = useMemo(() => buildScrollMap(bundle.numLayers), [bundle.numLayers]);
 
   useEffect(() => {
+    // prefers-reduced-motion: render a static snapshot at the climax (full
+    // brand reveal, frozen sim — the simulator's own useFrame skips its
+    // step when frame.reducedMotion is true).
+    if (frame.reducedMotion) {
+      frame.scrollProgress = 0.97;
+      frame.layerFrac = bundle.numLayers;
+      frame.phaseHeat = 1;
+      const lastPhase = phases[phases.length - 1];
+      setSub({
+        layerInt: bundle.numLayers,
+        phase: lastPhase.phase,
+        topToken: lastPhase.topToken,
+        topProb: lastPhase.topProb,
+        brandRevealStage: 1,
+      });
+      return;
+    }
+
     document.documentElement.style.setProperty('--scroll-vh', `${scrollVh}`);
     document.body.style.minHeight = `${scrollVh * 100}vh`;
 

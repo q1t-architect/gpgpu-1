@@ -51,6 +51,17 @@ body {
   color: var(--riso-magenta);
 }
 
+.hero--unsupported {
+  display: grid;
+  place-items: center;
+  font-family: 'Fragment Mono', monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--steel);
+  padding: 24px;
+}
+.hero--unsupported p { margin: 4px 0; }
+
 .hero-canvas {
   position: fixed !important;
   inset: 0;
